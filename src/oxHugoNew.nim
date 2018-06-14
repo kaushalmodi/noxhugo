@@ -1,4 +1,4 @@
-# Time-stamp: <2018-06-14 15:42:44 kmodi>
+# Time-stamp: <2018-06-14 15:51:05 kmodi>
 # Tiny utility to quick-start an ox-hugo generated Hugo site
 
 import os, strformat, strutils, debugverbosity
@@ -121,10 +121,12 @@ proc cloneThemes(dir: string) =
     var
       urlSplits = url.rsplit({'/'}, maxsplit = 1)
       themeName = urlSplits[1]
-      themeDir = dir / "themes" / themeName
+      themeDir1 = "themes" / themeName
+      themeDir = dir / themeDir1
     dbg "theme url splits: {urlSplits}"
     dbg "theme name: {themeName}"
     execShellCmdSafe(fmt"git clone --recurse-submodules {url} {themeDir}")
+    execShellCmdSafe(fmt"cd {dir} && git submodule add {url} {themeDir1}")
 
 proc updateSiteConfig(dir: string) =
   ## Update site's conmfig.toml
@@ -142,6 +144,11 @@ proc createOrgContent(dir: string) =
     orgContentFilePath = orgContentDirPath / orgContentFile
   createDir(orgContentDirPath)
   writeFile(orgContentFilePath, orgContents)
+
+proc doFirstCommit(dir: string) =
+  ## Create first git commit
+  dbg "Entering doFirstCommit"
+  execShellCmdSafe(fmt"""cd {dir} && git add -A && git commit -m "First commit"""")
 
 proc oxHugoNim(dir: string
                , force: bool = false) =
@@ -162,8 +169,9 @@ proc oxHugoNim(dir: string
     cloneThemes(dirPath)
     updateSiteConfig(dirPath)
     createOrgContent(dirPath)
+    doFirstCommit(dirPath)
 
-    echo fmt"Now open ‘{dir / orgContentDir / orgContentFile}’ in emacs and run ‘C-c C-e C-H C-H’"
+    echo fmt"\nNow open ‘{dir / orgContentDir / orgContentFile}’ in emacs and run ‘C-c C-e C-H C-H’"
   except:
     echo "[Error] " & getCurrentExceptionMsg()
 
