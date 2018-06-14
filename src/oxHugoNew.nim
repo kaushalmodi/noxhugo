@@ -1,4 +1,4 @@
-# Time-stamp: <2018-06-14 17:08:56 kmodi>
+# Time-stamp: <2018-06-14 17:19:49 kmodi>
 # Tiny utility to quick-start an ox-hugo generated Hugo site
 
 import os, strformat, strutils, debugverbosity
@@ -108,20 +108,13 @@ proc ctrlCHandler() {.noconv.} =
   echo " .. Installation canceled"
   quit 0
 
-proc binExists(binName: string) =
-  ## Check if ``binName`` exists in environment variable ``PATH``.
-  dbg "  Entering binExists({binName})"
-  for dir in split(getEnv("PATH"), PathSep):
-    if existsFile(dir / binName):
-      return
-  raise newException(UserError, "Binary “" & binName & "” not found in PATH")
-
-proc binExists(binNames: openArray[string]) =
+proc binExistCheck(binNames: openArray[string]) =
   ## Check if all elements of ``binNames`` exist in environment
   ## variable ``PATH``.
-  dbg "Entering binExists({binNames})"
+  dbg "Entering binExistCheck({binNames})"
   for bin in binNames:
-    binExists(bin)
+    if findExe(bin) == "":
+      raise newException(UserError, "Binary “" & bin & "” not found in PATH")
 
 proc hugoNewSite(dir: string) =
   ## Create new hugo site
@@ -176,7 +169,7 @@ proc oxHugoNim(dir: string
     dirPath = "." / dir
 
   try:
-    binExists(["hugo", "git"])
+    binExistCheck(["hugo", "git"])
     if force and dirExists(dirPath):
       removeDir(dirPath)
     hugoNewSite(dirPath)
