@@ -1,4 +1,4 @@
-# Time-stamp: <2018-06-14 15:51:05 kmodi>
+# Time-stamp: <2018-06-14 17:08:56 kmodi>
 # Tiny utility to quick-start an ox-hugo generated Hugo site
 
 import os, strformat, strutils, debugverbosity
@@ -108,6 +108,21 @@ proc ctrlCHandler() {.noconv.} =
   echo " .. Installation canceled"
   quit 0
 
+proc binExists(binName: string) =
+  ## Check if ``binName`` exists in environment variable ``PATH``.
+  dbg "  Entering binExists({binName})"
+  for dir in split(getEnv("PATH"), PathSep):
+    if existsFile(dir / binName):
+      return
+  raise newException(UserError, "Binary “" & binName & "” not found in PATH")
+
+proc binExists(binNames: openArray[string]) =
+  ## Check if all elements of ``binNames`` exist in environment
+  ## variable ``PATH``.
+  dbg "Entering binExists({binNames})"
+  for bin in binNames:
+    binExists(bin)
+
 proc hugoNewSite(dir: string) =
   ## Create new hugo site
   dbg "Entering hugoNewSite"
@@ -161,6 +176,7 @@ proc oxHugoNim(dir: string
     dirPath = "." / dir
 
   try:
+    binExists(["hugo", "git"])
     if force and dirExists(dirPath):
       removeDir(dirPath)
     hugoNewSite(dirPath)
@@ -171,7 +187,7 @@ proc oxHugoNim(dir: string
     createOrgContent(dirPath)
     doFirstCommit(dirPath)
 
-    echo fmt"\nNow open ‘{dir / orgContentDir / orgContentFile}’ in emacs and run ‘C-c C-e C-H C-H’"
+    echo &"\nNow open ‘{dir / orgContentDir / orgContentFile}’ in emacs and run ‘C-c C-e C-H C-H’"
   except:
     echo "[Error] " & getCurrentExceptionMsg()
 

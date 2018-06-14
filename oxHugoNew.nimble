@@ -9,4 +9,4 @@ bin           = @["oxHugoNew"]
 
 # Dependencies
 
-requires "nim >= 0.18.0", "cligen >= 0.9.11", "debugverbosity"
+requires "nim >= 0.18.1", "cligen >= 0.9.11", "debugverbosity"
