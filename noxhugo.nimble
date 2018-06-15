@@ -5,7 +5,7 @@ author        = "Kaushal Modi"
 description   = "Tiny utility to quick-start an ox-hugo generated Hugo site"
 license       = "MIT"
 srcDir        = "src"
-bin           = @["oxHugoNew"]
+bin           = @["noxhugo"]
 
 # Dependencies
 

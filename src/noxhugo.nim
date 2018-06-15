@@ -1,5 +1,5 @@
-# Time-stamp: <2018-06-14 22:30:10 kmodi>
-# Tiny utility to quick-start an ox-hugo generated Hugo site
+# Time-stamp: <2018-06-14 22:43:24 kmodi>
+# Tiny utility for generating Hugo sites using ox-hugo
 
 import os, osproc, strformat, strutils, debugverbosity
 
@@ -200,9 +200,9 @@ proc doFirstCommit(dir: string) =
   dbg "Entering doFirstCommit"
   execShellCmdSafe(fmt"""cd {dir} && git add -A && git commit -m "First commit"""")
 
-proc oxHugoNim(dir: string
-               , force: bool = false) =
-  ##oxHugoNew: Tiny utility to quick-start an ox-hugo generated Hugo site
+proc init(dir: string
+          , force: bool = false) =
+  ##noxhugo init: Initialize a new Hugo site for ox-hugo
 
   # https://rosettacode.org/wiki/Handle_a_signal#Nim
   setControlCHook(ctrlCHandler)
@@ -234,9 +234,9 @@ proc oxHugoNim(dir: string
 
 when isMainModule:
   import cligen
-  dispatch(oxHugoNim
-           , help = {"dir" : "Name of the new Hugo site directory"
-                      , "force" : "If the site directory already exists, it is first deleted!"
-                    }
-           , short = {"force" : 'F'
-                     })
+  dispatchMulti([init
+                 , help = {"dir" : "Name of the new Hugo site directory"
+                           , "force" : "If the site directory already exists, it is first deleted!"
+                          }
+                 , short = {"force" : 'F'
+                           }])
