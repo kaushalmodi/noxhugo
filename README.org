@@ -26,14 +26,19 @@ This command is used only for the *first time init* of a site.
 4. Deletes ~archetypes~ directory from the site as it's useless in the
    ~ox-hugo~ flow.
 5. Clones the following theme and theme component repos:
-   - https://github.com/kaushalmodi/hugo-bare-min-theme
-   - https://github.com/kaushalmodi/hugo-search-fuse-js
-   - https://github.com/kaushalmodi/hugo-debugprint
+   - Main theme -- https://github.com/kaushalmodi/hugo-bare-min-theme
+   - Theme component -- https://github.com/kaushalmodi/hugo-search-fuse-js
+   - Theme component -- https://github.com/kaushalmodi/hugo-debugprint
 
-   You are free to change this themes later.
-6. Updates the site config with some sane defaults.
+   You are free to change these themes later.
+6. Updates the site config with some sane defaults, setting the theme
+   to ~hugo-bare-min-theme~, etc.
 7. Generates a "starter" ~site.org~ Org content file.
 8. Git commits all of the above as the first commit.
+
+After that command, you can open that ~site.org~ file in Emacs and
+(assuming that you already have the ~ox-hugo~ package installed and
+set up) export it using ~C-c C-e C-H C-H~.
 *** Command
 #+begin_example
 noxhugo init -d foo
