@@ -1,0 +1,78 @@
+#+title: noxhugo
+#+author: Kaushal Modi
+
+Utility for generating Hugo sites using ox-hugo (Emacs + Org mode).
+
+* Noxhugo Commands
+** ~noxhugo new~
+
+This command is used only for the *first time init* of a site.
+
+1. Checks if ~hugo~ and ~git~ binaries are present in the ~PATH~.
+2. Checks if the ~hugo~ version is "new enough".
+   - If it's not new enough, the error thrown will be helpful.
+3. Runs ~hugo new site SITENAME~.
+   - The SITENAME is provided by the user using the "-d" switch.
+4. Deletes ~archetypes~ directory from the site as it's useless in the
+   ~ox-hugo~ flow.
+5. Clones the following theme and theme component repos:
+   - https://github.com/kaushalmodi/hugo-bare-min-theme
+   - https://github.com/kaushalmodi/hugo-search-fuse-js
+   - https://github.com/kaushalmodi/hugo-debugprint
+
+   You are free to change this themes later.
+6. Updates the site config with some sane defaults.
+7. Generates a "starter" ~site.org~ Org content file.
+8. Git commits all of the above as the first commit.
+*** Command
+#+begin_example
+noxhugo init -d foo
+#+end_example
+
+If the directory name specified with the "-d" switch already exists,
+~hugo~ will not generate a new site.
+
+In that case, you have a brute-force option -- to delete an existing
+site if any and create a new one from scratch.
+
+*WARNING! You will lose all content in that directory! It is deleted
+ entirely including its git history!*
+
+With that, here's how you would force-delete an existing site to
+create a new one in its place:
+#+begin_example
+noxhugo init -d foo -F
+#+end_example
+* Help
+#+begin_example
+noxhugo init -h
+#+end_example
+* Development
+** Dependency for building
+~nim~ built from [[https://github.com/nim-lang/Nim/tree/devel][~devel~ branch]].
+** Building
+[[https://github.com/nim-lang/nimble][~nimble~]] is used to build this project. This utility ships with Nim
+installation. Think of it as the equivalent of ~pip~ in Python.
+
+With Nim/~nimble~ installed, do:
+#+begin_example
+git clone https://github.com/kaushalmodi/noxhugo
+cd noxhugo
+nimble build # creates the noxhugo binary in the git repo root dir
+#+end_example
+** Installing
+If you want to install it (will build the binary and copy it to
+=~/.nimble/bin/=), do:
+#+begin_example
+# cd to the git repo dir
+nimble install
+#+end_example
+
+/You need to have added =~/.nimble/bin/= to your ~PATH~ environment
+variable.
+
+* COMMENT Local Variables                                           :ARCHIVE:
+# Local Variables:
+# fill-column: 70
+# eval: (auto-fill-mode 1)
+# End:

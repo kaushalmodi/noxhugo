@@ -1,5 +1,5 @@
-# Time-stamp: <2018-06-14 22:43:24 kmodi>
-# Tiny utility for generating Hugo sites using ox-hugo
+# Time-stamp: <2018-06-14 22:59:47 kmodi>
+# Utility for generating Hugo sites using ox-hugo (Emacs + Org mode)
 
 import os, osproc, strformat, strutils, debugverbosity
 
@@ -201,7 +201,7 @@ proc doFirstCommit(dir: string) =
   execShellCmdSafe(fmt"""cd {dir} && git add -A && git commit -m "First commit"""")
 
 proc init(dir: string
-          , force: bool = false) =
+          , forceDelete: bool = false) =
   ##noxhugo init: Initialize a new Hugo site for ox-hugo
 
   # https://rosettacode.org/wiki/Handle_a_signal#Nim
@@ -218,7 +218,7 @@ proc init(dir: string
       raise newException(UserError, "Current Hugo version " & hugoVersion &
         " is older than the minimum required version " & minHugoVersion)
 
-    if force and dirExists(dirPath):
+    if forceDelete and dirExists(dirPath):
       removeDir(dirPath)
     hugoNewSite(dirPath)
     # Remove the unnecessary archetypes dir
@@ -236,7 +236,7 @@ when isMainModule:
   import cligen
   dispatchMulti([init
                  , help = {"dir" : "Name of the new Hugo site directory"
-                           , "force" : "If the site directory already exists, it is first deleted!"
+                           , "forceDelete" : "If the site directory already exists, it is first deleted!"
                           }
-                 , short = {"force" : 'F'
+                 , short = {"forceDelete" : 'F'
                            }])
