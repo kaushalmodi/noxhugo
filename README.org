@@ -3,6 +3,16 @@
 
 Utility for generating Hugo sites using ox-hugo (Emacs + Org mode).
 
+-----
+*!ALERT! This project is in very Alpha stage. Feel free to
+  read/review/comment on the Nim code.*
+
+Ignore this alert.. just try out Nim! :)
+-----
+
+* What?
+- [[https://gohugo.io][What is Hugo?]]
+- [[https://github.com/kaushalmodi/ox-hugo][What is ~ox-hugo~?]]
 * Noxhugo Commands
 ** ~noxhugo new~
 
@@ -47,6 +57,12 @@ noxhugo init -d foo -F
 #+begin_example
 noxhugo init -h
 #+end_example
+* TODO [0/1]
+- [ ] Add ~noxhugo gen~ command so that site is generated using emacs
+  batch mode.
+  - Useful for site generation on CI/CD so that user needss to commit
+    just the Org files.
+  - Useful for non-Emacs users who just like Org mode.
 * Development
 ** Dependency for building
 ~nim~ built from [[https://github.com/nim-lang/Nim/tree/devel][~devel~ branch]].
