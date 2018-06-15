@@ -1,4 +1,4 @@
-# Time-stamp: <2018-06-14 22:59:47 kmodi>
+# Time-stamp: <2018-06-14 23:18:42 kmodi>
 # Utility for generating Hugo sites using ox-hugo (Emacs + Org mode)
 
 import os, osproc, strformat, strutils, debugverbosity
@@ -228,7 +228,7 @@ proc init(dir: string
     createOrgContent(dirPath)
     doFirstCommit(dirPath)
 
-    echo &"\nNow open ‘{dir / orgContentDir / orgContentFile}’ in emacs and run ‘C-c C-e C-H C-H’"
+    echo &"\nNow open ‘{dir / orgContentDir / orgContentFile}’ in emacs and run ‘C-c C-e H H’"
   except:
     echo "[Error] " & getCurrentExceptionMsg()
 
