@@ -1,4 +1,4 @@
-# Time-stamp: <2018-06-14 23:27:06 kmodi>
+# Time-stamp: <2018-06-15 00:02:57 kmodi>
 # Utility for generating Hugo sites using ox-hugo (Emacs + Org mode)
 
 import os, osproc, strformat, strutils, noxhugopkg/debugverbosity
@@ -78,8 +78,10 @@ All posts in here will have the category set to /emacs/.
 - It's draft state will be marked as =true= as the subtree has the
   todo state set to /TODO/.
 
-With the point _anywhere_ in this /Writing Hugo blog in Org/ post
+With the point anywhere *in this* /Writing Hugo blog in Org/ post
 subtree, do =C-c C-e H H= to export just this post.
+
+To export posts from *all subtrees* in this file, do =C-c C-e H A=.
 
 The exported Markdown has a little comment footer as set in the /Local
 Variables/ section below.
@@ -198,6 +200,11 @@ proc createOrgContent(dir: string) =
 proc doFirstCommit(dir: string) =
   ## Create first git commit
   dbg "Entering doFirstCommit"
+  # Add .gitkeep to empty directories that need to be committed.
+  writeFile(dir / "content/.gitkeep", "")
+  writeFile(dir / "layouts/.gitkeep", "")
+  writeFile(dir / "static/.gitkeep", "")
+  writeFile(dir / "data/.gitkeep", "")
   execShellCmdSafe(fmt"""cd {dir} && git add -A && git commit -m "First commit"""")
 
 proc init(dir: string
@@ -228,7 +235,7 @@ proc init(dir: string
     createOrgContent(dirPath)
     doFirstCommit(dirPath)
 
-    echo &"\nNow open ‘{dir / orgContentDir / orgContentFile}’ in emacs and run ‘C-c C-e H H’"
+    echo &"\nNow open ‘{dir / orgContentDir / orgContentFile}’ in emacs and run ‘C-c C-e H A’."
   except:
     echo "[Error] " & getCurrentExceptionMsg()
 

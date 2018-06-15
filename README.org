@@ -41,7 +41,8 @@ This command should be used only for the *first time init* of a site.
 
 After that command, you can open that ~site.org~ file in Emacs and
 (assuming that you already have the ~ox-hugo~ package installed and
-set up) export it using ~C-c C-e H H~.
+set up) export it using ~C-c C-e H A~. That will export posts from all
+subtrees in that file to the ~content/~ directory.
 *** Command
 #+begin_example
 noxhugo init -d foo
