@@ -1,9 +1,10 @@
-# Time-stamp: <2018-06-14 17:19:49 kmodi>
+# Time-stamp: <2018-06-14 22:30:10 kmodi>
 # Tiny utility to quick-start an ox-hugo generated Hugo site
 
-import os, strformat, strutils, debugverbosity
+import os, osproc, strformat, strutils, debugverbosity
 
 const
+  minHugoVersion = "0.42.1"
   defaultThemeUrls = @["https://github.com/kaushalmodi/hugo-bare-min-theme"
                        , "https://github.com/kaushalmodi/hugo-search-fuse-js"
                        , "https://github.com/kaushalmodi/hugo-debugprint"]
@@ -108,6 +109,47 @@ proc ctrlCHandler() {.noconv.} =
   echo " .. Installation canceled"
   quit 0
 
+proc hugoVersionInt(vStr: string): int =
+  ## Convert Hugo version from string to an integer.
+  var
+    vStrComps = vStr.split('-')
+  let
+    isDev = vStrComps.len >= 2 and vStrComps[1] == "DEV"
+  dbg "isDev = {isDev}"
+  dbg "vStr = {vStr}"
+  dbg "vStrComps = {vStrComps}"
+
+  vStrComps = vStrComps[0].split('.')
+  dbg "vStrComps = {vStrComps}"
+
+  var (vMajor, vMinor, vMicro) = (parseInt(vStrComps[0]), 0, 0)
+  if vStrComps.len >= 2:
+    vMinor = parseInt(vStrComps[1])
+  if vStrComps.len >= 3:
+    vMicro = parseInt(vStrComps[2])
+  if isDev:
+    if vMinor > 0:
+      vMinor.dec
+    else:
+      vMajor.dec
+      vMinor = 999
+    vMicro += 999
+  dbg "vMajor, vMinor, vMicro = {vMajor}, {vMinor}, {vMicro}"
+  return (vMajor * 1_000_000) + (vMinor * 1_000) + vMicro
+
+proc getHugoVersion(hugoBin: string): string =
+  ## Get current Hugo version.
+  var
+    vStr = execProcess(hugoBin & " version").strip()
+  let
+    searchStr = "Hugo Static Site Generator v"
+    vStartIndex = if vStr.find(searchStr) == 0: searchStr.len else: -1
+  if vStartIndex < 0:
+    raise newException(UserError, "Unable to parse Hugo version: “" &
+      hugoBin & " version” returned “" & vStr & "”")
+  vStr = vStr[vStartIndex .. vStr.high]
+  return vStr.split(' ')[0]
+
 proc binExistCheck(binNames: openArray[string]) =
   ## Check if all elements of ``binNames`` exist in environment
   ## variable ``PATH``.
@@ -166,10 +208,16 @@ proc oxHugoNim(dir: string
   setControlCHook(ctrlCHandler)
 
   let
+    hugoBin = "hugo"
     dirPath = "." / dir
 
   try:
-    binExistCheck(["hugo", "git"])
+    binExistCheck([hugoBin, "git"])
+    let hugoVersion = getHugoVersion(hugoBin)
+    if hugoVersionInt(hugoVersion) < hugoVersionInt(minHugoVersion):
+      raise newException(UserError, "Current Hugo version " & hugoVersion &
+        " is older than the minimum required version " & minHugoVersion)
+
     if force and dirExists(dirPath):
       removeDir(dirPath)
     hugoNewSite(dirPath)
