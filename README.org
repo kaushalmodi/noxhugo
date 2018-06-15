@@ -12,9 +12,9 @@ Ignore this alert.. just try out Nim! :)
 
 * What?
 - [[https://gohugo.io][What is Hugo?]]
-- [[https://github.com/kaushalmodi/ox-hugo][What is ~ox-hugo~?]]
+- [[https://ox-hugo.scripter.co/][What is ~ox-hugo~?]]
 * Noxhugo Commands
-** ~noxhugo new~
+** ~noxhugo init~
 
 This command is used only for the *first time init* of a site.
 
