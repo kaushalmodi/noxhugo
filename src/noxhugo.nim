@@ -1,7 +1,7 @@
-# Time-stamp: <2018-06-14 23:18:42 kmodi>
+# Time-stamp: <2018-06-14 23:27:06 kmodi>
 # Utility for generating Hugo sites using ox-hugo (Emacs + Org mode)
 
-import os, osproc, strformat, strutils, debugverbosity
+import os, osproc, strformat, strutils, noxhugopkg/debugverbosity
 
 const
   minHugoVersion = "0.42.1"

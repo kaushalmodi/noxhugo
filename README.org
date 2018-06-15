@@ -13,10 +13,13 @@ Ignore this alert.. just try out Nim! :)
 * What?
 - [[https://gohugo.io][What is Hugo?]]
 - [[https://ox-hugo.scripter.co/][What is ~ox-hugo~?]]
-* Noxhugo Commands
+* Noxhugo Sub-commands
+~noxhugo~ has the following sub-commands:
+- ~init~
+- ~help~
 ** ~noxhugo init~
 
-This command is used only for the *first time init* of a site.
+This command should be used only for the *first time init* of a site.
 
 1. Checks if ~hugo~ and ~git~ binaries are present in the ~PATH~.
 2. Checks if the ~hugo~ version is "new enough".
@@ -59,8 +62,14 @@ create a new one in its place:
 noxhugo init -d foo -F
 #+end_example
 * Help
+Show help for all sub-commands:
 #+begin_example
-noxhugo init -h
+noxhugo help
+#+end_example
+
+Show help only for a given sub-command {X}:
+#+begin_example
+noxhugo {X} -h
 #+end_example
 * TODO [0/1]
 - [ ] Add ~noxhugo gen~ command so that site is generated using emacs
