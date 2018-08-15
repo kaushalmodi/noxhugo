@@ -1,4 +1,4 @@
-# Time-stamp: <2018-06-15 00:02:57 kmodi>
+# Time-stamp: <2018-06-28 13:34:31 kmodi>
 # Utility for generating Hugo sites using ox-hugo (Emacs + Org mode)
 
 import os, osproc, strformat, strutils, noxhugopkg/debugverbosity
@@ -242,6 +242,7 @@ proc init(dir: string
 when isMainModule:
   import cligen
   dispatchMulti([init
+                 , version = ("version", "0.1.0")
                  , help = {"dir" : "Name of the new Hugo site directory"
                            , "forceDelete" : "If the site directory already exists, it is first deleted!"
                           }

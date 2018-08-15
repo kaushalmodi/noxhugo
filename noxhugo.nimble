@@ -9,4 +9,4 @@ bin           = @["noxhugo"]
 
 # Dependencies
 
-requires "nim >= 0.18.1", "cligen >= 0.9.11"
+requires "nim >= 0.18.1", "cligen >= 0.9.15"
