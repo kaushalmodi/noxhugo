@@ -5,7 +5,7 @@ import std/[os, osproc, strformat, strutils]
 import noxhugopkg/[debugverbosity]
 
 const
-  minHugoVersion = "0.42.1"
+  minHugoVersion = "0.55.6"
   defaultThemeUrls = @["https://github.com/kaushalmodi/hugo-bare-min-theme"
                        , "https://github.com/kaushalmodi/hugo-search-fuse-js"
                        , "https://github.com/kaushalmodi/hugo-debugprint"]
