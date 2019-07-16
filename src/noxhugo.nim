@@ -241,10 +241,25 @@ proc init(dir: string
 
 when isMainModule:
   import cligen
-  dispatchMulti([init
-                 , version = ("version", "0.1.0")
-                 , help = {"dir" : "Name of the new Hugo site directory"
-                           , "forceDelete" : "If the site directory already exists, it is first deleted!"
-                          }
-                 , short = {"forceDelete" : 'F'
-                           }])
+
+  const
+    version = staticExec("git describe --tags HEAD")
+    nimbleData = staticRead("../noxhugo.nimble")
+    uri = "https://github.com/kaushalmodi/noxhugo"
+    # https://github.com/c-blake/cligen/issues/107
+    topLvlUse = clUseMultiPerlish &
+      "\n\nURI\n  " & uri &
+      "\n\nAUTHOR\n  " & nimbleData.fromNimble("author") &
+      "\n\nVERSION\n  " & version
+
+  # https://github.com/c-blake/cligen/blob/master/RELEASE-NOTES.md#version-0928
+  clCfg.version = version
+
+  dispatchMulti(
+    [ "multi", usage = topLvlUse ],
+    [ init
+      , help = {"dir" : "Name of the new Hugo site directory",
+                "forceDelete" : "If the site directory already exists, it is first deleted!"
+               }
+      , short = {"forceDelete" : 'F'
+                }])
