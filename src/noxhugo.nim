@@ -1,5 +1,4 @@
-# Time-stamp: <2018-06-28 13:34:31 kmodi>
-# Utility for generating Hugo sites using ox-hugo (Emacs + Org mode)
+## Utility for generating Hugo sites using ox-hugo (Emacs + Org mode)
 
 import std/[os, osproc, strformat, strutils]
 import noxhugopkg/[debugverbosity]
@@ -210,7 +209,7 @@ proc doFirstCommit(dir: string) =
 
 proc init(dir: string
           , forceDelete: bool = false) =
-  ##noxhugo init: Initialize a new Hugo site for ox-hugo
+  ## Initialize a new Hugo site for ox-hugo
 
   # https://rosettacode.org/wiki/Handle_a_signal#Nim
   setControlCHook(ctrlCHandler)
